@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-
-import 'timer/TimerUI.dart';
 import 'ui/home.dart';
 
 void main() {

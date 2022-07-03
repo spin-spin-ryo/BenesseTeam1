@@ -55,16 +55,17 @@ class _Home extends State<Home> with WidgetsBindingObserver{
       if (nowStudying){
         debugPrint("ok");
         LeaveTime = DateTime.now();
-        ShowAlertPlusSecond(0,300,"test1","test2");
-        ShowAlertPlusSecond(1,600,"test1","test2");
-        ShowAlertPlusSecond(2,900,"test1","test2");
-        ShowAlertPlusSecond(3,1200,"test1","test2");
-        ShowAlertPlusSecond(4,1500,"test1","test2");
+
+        ShowAlertPlusSecond(0,10,"スマホ触ってから5分が経ちました","残り時間は${GoalMinute-5}分です");
+        ShowAlertPlusSecond(1,20,"スマホ触ってから10分が経ちました","残り時間は${GoalMinute-10}分です");
+        ShowAlertPlusSecond(2,30,"スマホ触ってから15分が経ちました","残り時間は${GoalMinute-15}分です");
+        ShowAlertPlusSecond(3,40,"スマホ触ってから20分が経ちました","残り時間は${GoalMinute-20}分です");
+        ShowAlertPlusSecond(4,50,"スマホ触ってから25分が経ちました","残り時間は${GoalMinute-25}分です");
       }
     }
 
     if (state == AppLifecycleState.resumed){
-      AccumurateSmartPhoneTime += DateTime.now().difference(LeaveTime).inMinutes;
+      AccumurateSmartPhoneTime += DateTime.now().difference(LeaveTime).inSeconds;
       await flutterLocalNotificationsPlugin.cancelAll();
     }
 
@@ -80,6 +81,7 @@ class _Home extends State<Home> with WidgetsBindingObserver{
       GraphBody(),
     ];
     return Scaffold(
+        resizeToAvoidBottomInset: false,
       appBar: MakeAppbar(),
       body: _pages[pageindex],
       bottomNavigationBar: MakeBottonNavigationBar()
@@ -98,9 +100,14 @@ class _Home extends State<Home> with WidgetsBindingObserver{
               color: Colors.black
             ),
           ),
-
+          Image.asset("images/b08001.png",height: 200,),
           Container(
-            color: box_color,
+            height: 55.0,
+            width: 244.0,
+            decoration: BoxDecoration(
+              color: HexColor("6acdca"),
+              borderRadius: BorderRadius.circular(14.0)
+            ),
             child: TextButton(
               onPressed: () =>
               {
@@ -111,30 +118,55 @@ class _Home extends State<Home> with WidgetsBindingObserver{
                   StartTime = DateTime.now();
                 })
               },
-              child: const Text(
-                "勉強開始",
-                style: TextStyle(
-                    color: Colors.black
+              child: Text(
+                "Start",
+                style:  GoogleFonts.mPlusRounded1c(
+                    color: Colors.white,
+                    fontSize:18.0
+                  )
                 ),
               ),
             ),
-          )
-        ],
+          ],
       ),
     );
   }
   Widget StudyingBody() {
     debugPrint(GoalMinute.toString());
     return Center(
-      child: Container(
-        color: box_color,
-        child: TextButton(
-          onPressed: () =>
-          {
-            onPressedStudying()
-          },
-          child: Text("勉強終了"),
-        ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            "ファイト！その調子だよ！",
+            style:GoogleFonts.mPlusRounded1c(
+                fontSize: 24.0,
+                color: Colors.black
+            ),
+          ),
+          Image.asset("images/b11501.png",height: 200,),
+          Container(
+            height: 55.0,
+            width: 244.0,
+            decoration: BoxDecoration(
+                color: HexColor("ff70a2"),
+                borderRadius: BorderRadius.circular(14.0)
+            ),
+            child: TextButton(
+              onPressed: () =>
+              {
+                onPressedStudying()
+              },
+              child: Text(
+                  "finish",
+                  style:  GoogleFonts.mPlusRounded1c(
+                    color: Colors.white,
+                    fontSize:18.0
+                  )
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -188,7 +220,7 @@ class _Home extends State<Home> with WidgetsBindingObserver{
                     ),
                     Center(
                       child: Stack(
-                          children: const <Widget>[
+                          children: <Widget>[
                             Center(
                               //文字の背景に線を引く部分
                               child: Text(
@@ -204,7 +236,7 @@ class _Home extends State<Home> with WidgetsBindingObserver{
 
                             Center(
                               child: Text(
-                                "15分!",
+                                "${AccumurateSmartPhoneTime}分!",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 40),
@@ -375,7 +407,7 @@ class _Home extends State<Home> with WidgetsBindingObserver{
         context: context,
         builder: (context){
           return AlertDialog(
-            title: Text("目標時間"),
+            title: Text("目標時間(分)"),
             content: TextField(
               keyboardType: TextInputType.number,
               onChanged: (value) => {
@@ -405,11 +437,11 @@ class _Home extends State<Home> with WidgetsBindingObserver{
       items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.home,color: Colors.white,),
-          label: 'main',
+          label: 'Home',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.analytics,color: Colors.white,),
-          label: 'analytics',
+          label: 'Graph',
         ),
       ],
       backgroundColor: HexColor("50b1b8"),
