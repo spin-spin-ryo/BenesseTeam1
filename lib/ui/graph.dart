@@ -81,78 +81,82 @@ class _MyGraphPageState extends State<MyGraphPage> {
         title: Text('グラフ画面'),
       ),
 
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  width: 50,
-                  height: 50,
-                  child: CustomPaint(
-                    painter: Left_lines(),
-                  ),
-                ),
-                const Text(
-                  "お疲れさま!",
-                  style: TextStyle(
-                      fontSize: 24),
-                ),
-                Container(
-                  width: 50,
-                  height: 50,
-                  child: CustomPaint(
-                    painter: Right_lines(),
-                  ),
-                ),
-              ],
-            ),
+      body: GraphBody()
+    );
+  }
 
-            Container(
-                margin: const EdgeInsets.all(40),
-                child: Column(
-                    children: <Widget>[
-                      Container(
-                        child: const Text(
-                          "スマホをさわった時間はなんと",
-                          style: TextStyle(fontSize: 16),
-                        ),
+  Widget GraphBody(){
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                width: 50,
+                height: 50,
+                child: CustomPaint(
+                  painter: Left_lines(),
+                ),
+              ),
+              const Text(
+                "お疲れさま!",
+                style: TextStyle(
+                    fontSize: 24),
+              ),
+              Container(
+                width: 50,
+                height: 50,
+                child: CustomPaint(
+                  painter: Right_lines(),
+                ),
+              ),
+            ],
+          ),
+
+          Container(
+              margin: const EdgeInsets.all(40),
+              child: Column(
+                  children: <Widget>[
+                    Container(
+                      child: const Text(
+                        "スマホをさわった時間はなんと",
+                        style: TextStyle(fontSize: 16),
                       ),
-                      Center(
-                        child: Stack(
-                            children: const <Widget>[
-                              Center(
-                                //文字の背景に線を引く部分
-                                child: Text(
-                                  "_______",
-                                  style: TextStyle(
-                                      decoration: TextDecoration.underline,
-                                      decorationThickness: 5,
-                                      decorationColor: Color(0xff6acdca),
-                                      fontSize: 40
-                                  ),
+                    ),
+                    Center(
+                      child: Stack(
+                          children: const <Widget>[
+                            Center(
+                              //文字の背景に線を引く部分
+                              child: Text(
+                                "_______",
+                                style: TextStyle(
+                                    decoration: TextDecoration.underline,
+                                    decorationThickness: 5,
+                                    decorationColor: Color(0xff6acdca),
+                                    fontSize: 40
                                 ),
                               ),
+                            ),
 
-                              Center(
-                                child: Text(
-                                  "15分!",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 40),
-                                ),
+                            Center(
+                              child: Text(
+                                "15分!",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 40),
                               ),
-                            ]
-                        ),
+                            ),
+                          ]
                       ),
-                      makeChart(datas),
-                    ]
-                )
-            ),
-          ],
-        ),
+                    ),
+                    makeChart(datas),
+                  ]
+              )
+          ),
+        ],
       ),
     );
   }
