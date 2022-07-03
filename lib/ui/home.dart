@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:math';
 
 import 'package:benesse_team1/ui/Graph.dart';
@@ -5,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 MaterialColor box_color = Colors.grey;
@@ -25,7 +27,12 @@ class _Home extends State<Home> with WidgetsBindingObserver{
   bool nowStudying = false;
   bool finishStudying = false;
   DateTime StartTime = DateTime.now();
-  int StudyingSecond = 0;
+  int StudyingMinite = 0;
+  int GoalMinute = -1;
+  int AccumurateSmartPhoneTime = 0;
+  DateTime LeaveTime = DateTime.now();
+
+
 
   @override
   void initState() {
@@ -40,6 +47,7 @@ class _Home extends State<Home> with WidgetsBindingObserver{
     if (state == AppLifecycleState.paused){
       if (nowStudying){
         debugPrint("ok");
+        LeaveTime = DateTime.now();
         ShowAlertPlusSecond(0,300,"test1","test2");
         ShowAlertPlusSecond(1,600,"test1","test2");
         ShowAlertPlusSecond(2,900,"test1","test2");
@@ -49,6 +57,7 @@ class _Home extends State<Home> with WidgetsBindingObserver{
     }
 
     if (state == AppLifecycleState.resumed){
+      AccumurateSmartPhoneTime += DateTime.now().difference(LeaveTime).inMinutes;
       await flutterLocalNotificationsPlugin.cancelAll();
     }
 
@@ -89,6 +98,7 @@ class _Home extends State<Home> with WidgetsBindingObserver{
         child: TextButton(
           onPressed: () =>
           {
+            InputDialog(context),
             setState(() {
               pageindex = 1;
               nowStudying = true;
@@ -107,6 +117,7 @@ class _Home extends State<Home> with WidgetsBindingObserver{
   }
 
   Widget StudyingBody() {
+    debugPrint(GoalMinute.toString());
     return Center(
       child: Container(
         color: box_color,
@@ -144,13 +155,13 @@ class _Home extends State<Home> with WidgetsBindingObserver{
     });
   }
 
-  onPressedStudying() {
+  onPressedStudying(){
     setState(() {
-      StudyingSecond = DateTime
+      StudyingMinite = DateTime
           .now()
           .difference(StartTime)
-          .inSeconds;
-      debugPrint(StudyingSecond.toString());
+          .inMinutes;
+      debugPrint(StudyingMinite.toString());
       pageindex = 2;
     });
     Future.delayed(const Duration(seconds: 5), () {
@@ -159,6 +170,16 @@ class _Home extends State<Home> with WidgetsBindingObserver{
         nowStudying = false;
       });
     });
+    SaveDate();
+  }
+
+  Future<void> SaveDate() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String Today= DateTime.now().year.toString() + DateTime.now().month.toString() + DateTime.now().day.toString();
+    int _count = prefs.getInt(Today+"Study") ?? 0;
+    await prefs.setInt(Today+"Study", _count + StudyingMinite - AccumurateSmartPhoneTime);
+    _count = prefs.getInt(Today+"SmartPhone") ?? 0;
+    await prefs.setInt(Today+"SmartPhone", _count + AccumurateSmartPhoneTime);
   }
 
   Future<void> _init() async {
@@ -188,7 +209,6 @@ class _Home extends State<Home> with WidgetsBindingObserver{
     var tokyo = tz.getLocation('Asia/Tokyo');
     tz.setLocalLocation(tokyo);
   }
-
   Future<void> ShowAlertPlusSecond(int index,int second, String message1, String message2) async {
     await flutterLocalNotificationsPlugin.zonedSchedule(
         index,
@@ -203,10 +223,34 @@ class _Home extends State<Home> with WidgetsBindingObserver{
         uiLocalNotificationDateInterpretation:
         UILocalNotificationDateInterpretation.absoluteTime);
   }
+
+  Future<void> InputDialog(BuildContext context){
+    return showDialog(
+        context: context,
+        builder: (context){
+          return AlertDialog(
+            title: Text("目標時間"),
+            content: TextField(
+              keyboardType: TextInputType.number,
+              onChanged: (value) => {
+                setState((){
+                  if (value.length!=0){
+                    GoalMinute = int.parse(value);
+                  }
+                })
+              },
+            ),
+              actions:<Widget>[
+                ElevatedButton(
+                  child: Text('開始'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                )]
+          );
+        }
+    );
+  }
 }
-
-
-
-
 
 
