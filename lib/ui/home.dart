@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:benesse_team1/ui/HexToColor.dart';
+import 'package:benesse_team1/ui/test_firebase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,6 +8,7 @@ import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:firebase_core/firebase_core.dart';
 
 
 MaterialColor box_color = Colors.grey;
@@ -40,6 +42,7 @@ class _Home extends State<Home> with WidgetsBindingObserver{
     print("initState");
     WidgetsBinding.instance.addObserver(this);
     _init();
+    Firebase.initializeApp();
     datas = [
       SampleData("6/6-6/12", 480, 55),
       SampleData("6/13-6/19", 630, 90),
@@ -116,6 +119,8 @@ class _Home extends State<Home> with WidgetsBindingObserver{
                 setState(() {
                   pageindex = 1;
                   nowStudying = true;
+                  StudyingMinite = 0;
+                  AccumurateSmartPhoneTime = 0;
                   StartTime = DateTime.now();
                 })
               },
@@ -342,20 +347,23 @@ class _Home extends State<Home> with WidgetsBindingObserver{
       StudyingMinite = DateTime
           .now()
           .difference(StartTime)
-          .inMinutes;
+          .inSeconds;
       debugPrint(StudyingMinite.toString());
       pageindex = 3;
     });
+    SaveDate();
+    AddData obj = AddData("20220703",AccumurateSmartPhoneTime,StudyingMinite - AccumurateSmartPhoneTime);
+    obj.addData();
     Future.delayed(const Duration(seconds: 5), () {
       setState(() {
         pageindex = 0;
         nowStudying = false;
       });
     });
-    SaveDate();
   }
 
   Future<void> SaveDate() async {
+    debugPrint("Runs SaveDate");
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String Today= DateTime.now().year.toString() + DateTime.now().month.toString() + DateTime.now().day.toString();
     int _count = prefs.getInt(Today+"Study") ?? 0;

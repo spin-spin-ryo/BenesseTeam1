@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "192421743251",
+    "project_id": "benesseteam1",
+    "storage_bucket": "benesseteam1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:192421743251:android:4ff0c2462d763843d09b66",
+        "android_client_info": {
+          "package_name": "com.benesse_team1.benesse_tea1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "192421743251-09mue21ostecnn9m9a3o3oj60avkfned.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYYE8y-roqvoeTCJl0fX4qZKaCNEW0nAA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "192421743251-09mue21ostecnn9m9a3o3oj60avkfned.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:192421743251:android:a8084679a0a07b4fd09b66",
+        "android_client_info": {
+          "package_name": "com.benesse_team1.benesse_team1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "192421743251-09mue21ostecnn9m9a3o3oj60avkfned.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYYE8y-roqvoeTCJl0fX4qZKaCNEW0nAA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "192421743251-09mue21ostecnn9m9a3o3oj60avkfned.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
