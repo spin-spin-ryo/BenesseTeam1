@@ -65,7 +65,8 @@ class _Home extends State<Home> with WidgetsBindingObserver{
     }
 
     if (state == AppLifecycleState.resumed){
-      AccumurateSmartPhoneTime += DateTime.now().difference(LeaveTime).inSeconds;
+      AccumurateSmartPhoneTime += DateTime.now().difference(LeaveTime).inSeconds
+      ;
       await flutterLocalNotificationsPlugin.cancelAll();
     }
 
@@ -369,9 +370,9 @@ class _Home extends State<Home> with WidgetsBindingObserver{
   Future<void> _initializeNotification() async {
     const IOSInitializationSettings initializationSettingsIOS =
     IOSInitializationSettings(
-      requestAlertPermission: false,
-      requestBadgePermission: false,
-      requestSoundPermission: false,
+      requestAlertPermission: true,
+      requestBadgePermission: true,
+      requestSoundPermission: true,
     );
     const AndroidInitializationSettings initializationSettingsAndroid =
     AndroidInitializationSettings('@mipmap/ic_launcher');
